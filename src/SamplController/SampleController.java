@@ -25,18 +25,12 @@ public class SampleController {
 		doUser(request, response);
 	} //end
 	
-	//sample용 이후 프로젝트이후 수정 필요
+	//sample
 	public void doUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("doUser(1,2) "); 
 	 	response.setContentType("text/html; charset=UTF-8");
 	 		PrintWriter out = response.getWriter() ;
-		  	out.println("<h1>PhotoController.java문서 12:00 </h1>");
-		  	out.println("<img src = images/aaa.gif>");
-		  	out.println("<img src='images/aaa.gif'>");
-		  	out.println("<img src='images/aaa.gif'>");
-		  	out.println("<img src = 'images/aaa.gif'>");
-		  	out.println("<img src = 'images/aaa.gif'> <p>");
-		  	out.println("<img src = 'images/bar.gif' > ");
+		  	
 		  	
 		  	
 	}
