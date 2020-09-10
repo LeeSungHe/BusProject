@@ -19,6 +19,8 @@ noticeContent varchar2(1000) not null,
 noticeDate date,
 noticeHit number(3) not null
 );
+
+
 CREATE SEQUENCE payNum --시퀀스이름 EX_SEQ
 INCREMENT BY 1 --증감숫자 1
 START WITH 1 --시작숫자 1
