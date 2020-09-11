@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Online seat reservation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" type="text/css" href="seat.css"/>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script type="text/javascript" src="seat.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div>
+                    <h1>버스좌석 예약</h1>
+                    <div class='row text-center'>
+                        <input type="hidden" class="form-control input" id="Name" value="helloId" placeholder="아이디">
+                        성인<input type="number" min='0' max='28' style="width:3%;margin-right: 10px;" id="Adults" value="0" >
+                        학생<input type="number" min='0' max='28' style="width:3%;margin-right: 10px;" id="Students" value="0" >
+                        <input type="text" min='0' max='28' class="form-control input" id="Seats"  style="width:5%;margin-right: 10px;" placeholder="총좌석" readonly="readonly">명
+                        <button type="button" id="Selectseat" class="btn btn-success seatsBtn">예약석선택</button>
+                    </div>
+                    <div class='row'>
+                    </div>
+                    <div class="row">
+                        <div class="screen">운전석</div>
+                        <div class=''>출입구</div>
+                    </div>
+                    <div class="row">
+                        <div></div>
+                        <div>
+                            <table id="seatTable" class="table fixed-column td">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>B</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C</td>
+                                    </tr>
+                                    <tr>
+                                        <td>D</td>
+                                    </tr>
+                                    <tr>
+                                        <td>E</td>
+                                    </tr>
+                                    <tr>
+                                        <td>F</td>
+                                    </tr>
+                                    <tr>
+                                        <td>G</td>
+                                    </tr>
+                                    <tr>
+                                        <td>H</td>
+                                    </tr>
+                                    <tr>
+                                        <td>I</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" id="ConfirmSeat" class="btn btn-warning seatsBtn">좌석예약</button>
+                            <div>
+                                <span class="spanBox" style='Background-color:green'></span><label>선택 좌석</label>
+                                <span class="spanBox" style='Background-color:red'></span><label>예약 좌석</label>
+                                <span class="spanBox"></span><label>빈좌석</label>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class=''></div>
+                <div class=''>
+                    <!-- 좌석 예약 결과 표시 -->
+                    <table class='table-striped table table-bordered resultTable'>
+                        <thead>
+                            <tr>
+                                <th>회원</th>
+                                <th>좌석 수</th>
+                                <th>좌석 번호</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <!-- 좌석 예약 결과 표시 -->
+                </div>
+                <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'></div>
+            </div>
+        </div>
+    </body>
+</html>
