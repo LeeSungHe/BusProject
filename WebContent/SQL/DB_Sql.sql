@@ -49,10 +49,10 @@ commit;
 --버스별 좌석 테이블
 create table busSeat(
   seatNum int primary key ,--버스 좌석 테이블 시퀀스
-  seatPay int null, --결제번호(외래키)
   seatRtNum int null, --노선정보번호(외래키)
   busSeatNum int null,--노선별배차(외래키)
   userId varchar2(20) not null , --회원아이디 FK
+  seatPay int null, --결제번호
   seatCode varchar2(30) not null,--버스 좌석코드
   seatMoney int default 0 not null,--버스 판매금액
   seatName varchar2(20) not null,--성인,학생
