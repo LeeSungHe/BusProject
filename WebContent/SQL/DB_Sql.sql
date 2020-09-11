@@ -1,89 +1,100 @@
 --회원테이블
-select * from busMember;
+create sequence m_userNo
+  start with 1
+  increment by 1;
 
 create table busMember(
-  userNum int not null primary key, -- 시퀀스
-  userId varchar2(20) not null UNIQUE , --유저 아이디(고유값)
-  userPass varchar2(30) not null,--유저 패스워드
-  userImgUp varchar2(100) null,--회원 이미지 업로드
-  userEmail varchar2(30) not null,--유저 이메일
-  userPhone varchar2(40) not null, --유저 폰번호 
-  userDate date, --유저 가입날짜
-  userAdmin int default 0 -- 관리자 9 회원 0
+  m_userNo  number(4) primary key,          --m_userNo 시퀀스
+  m_id      varchar2(20) not null unique,   --유저 아이디
+  m_pw      varchar2(20) not null,          --유저 비밀번호
+  m_img     varchar2(100) null,             --유저 이미지
+  m_email   varchar2(40) not null,          --유저 이메일
+  m_phone   varchar2(40) not null,          --유저 폰번호
+  m_date    date,                           --유저 가입날짜
+  m_admin   number(2) default 0             --관리자9, 회원0
 );
 
 --공지사항
+create sequence n_noticeNo
+  start with 1
+  increment by 1;
+
 create table busNotice(
-noticeSeq int primary key,
-userId VARCHAR2(10) not null,--유저 아이디(외래키)
-noticeTitle VARCHAR2(100) not null,
-noticeContent varchar2(1000) not null,
-noticeDate date,
-noticeHit number(3) not null
+  n_noticeNo  number(4) primary key,         --n_noticeNo 시퀀스
+  n_id        varchar2(20) not null unique,  --유저 아이디(fk)
+  n_title     varchar2(100) not null,        --글 제목
+  n_content   varchar2(1000) not null,       --글 내용
+  n_date      date,                          --게시 날짜(sysdate)
+  n_hit       number(3) default 0 not null,  --조회수
+  constraints bus_id_fk foreign key(n_id)    
+  references busMember(m_id)                 
 );
-
-
-CREATE SEQUENCE payNum --시퀀스이름 EX_SEQ
-INCREMENT BY 1 --증감숫자 1
-START WITH 1 --시작숫자 1
-MINVALUE 1 --최소값 1
-MAXVALUE 1000; --최대값 1000
-
-commit;
-
-insert into busMember values(userNum.nextval,'pink','pink','','pink@pink.com','010-2345-6789',sysdate,0);
 
 --버스 노선 정보 목록
-create table busList(
-  busListNum int PRIMARY key not null,--시퀀스 자동증가
-  busStTmNm varchar2(40) not null,--출발 터미널 이름
-  busStLcNm varchar2(40) not null, --출발 지역 이름
-  busEdTmNm varchar2(40) not null, --도착 터미널 이름
-  busEdLcNm varchar2(20) not null --도착 지역 이름
+create sequence r_routeNo
+  start with 1
+  increment by 1;
+
+create table busRoute(
+  r_routeNo   number(4) primary key,    --r_routeNo시퀀스
+  r_departNo  number(4) not null,       --출발 지역 번호
+  r_depart    varchar2(20) not null,    --출발 지역
+  r_arrivalNo number(4) not null,       --도착 지역 번호
+  r_arrival   varchar2(20) not null     --도착 지역
 );
 
-insert into busList values(busListNum.nextval,   '서울경부' ,   '서울',    '안성',    '인천/경기');
+--버스 배차 목록
+create sequence t_timeNo
+  start with 1
+  increment by 1;
 
-commit;
+create table busTime(
+  t_timeNo    number(4) primary key,         --t_timeNo시퀀스
+  t_routeNo   number(4) not null unique,     --노선 정보 번호(fk)
+  t_depart    date not null,                 --출발 날짜&시간
+  t_arrival   date not null,                 --도착 날짜&시간
+  t_company   varchar2(20) not null,         --버스회사('tis고속')
+  t_rank      varchar2(20) not null,         --버스등급('우등'or'일반')
+  t_seat      number(4) not null,            --총 좌석 수(28)
+  t_seatRmd   number(4) not null,            --잔여 좌석 수
+  t_platform  number(4) not null,            --버스 타는 홈
+  t_fare      number(10) default 0 not null, --버스 요금(성인 12500, 학생 8500)
+  constraints bus_routeNo_fk foreign key(t_routeNo) 
+  references busRoute(r_routeNo)
+);
 
 --버스별 좌석 테이블
+create sequence s_seatNo
+  start with 1
+  increment by 1;
+
 create table busSeat(
-  seatNum int primary key ,--버스 좌석 테이블 시퀀스
-  seatRtNum int null, --노선정보번호(외래키)
-  busSeatNum int null,--노선별배차(외래키)
-  userId varchar2(20) not null , --회원아이디 FK
-  seatPay int null, --결제번호
-  seatCode varchar2(30) not null,--버스 좌석코드
-  seatMoney int default 0 not null,--버스 판매금액
-  seatName varchar2(20) not null,--성인,학생
-  seatDate date --좌석 예약번호
+  s_seatNo    number(4) primary key,         --s_seatNo시퀀스
+  s_routeNo   number(4) not null unique,     --노선 정보 번호(fk)
+  s_timeNo    number(4) not null unique,     --배차 번호(fk)
+  s_id        varchar2(20) not null,         --유저 아이디(fk)
+  s_code      varchar2(20) not null,         --좌석 코드
+  s_fare      number(10) default 0 not null, --좌석 요금(성인 12500, 학생 8500)
+  s_userType  varchar2(20) not null          --승객 구분('성인'or'학생')
 );
 
---버스 별 배차목록
-create table busCompany(
-  busCpNum int not null primary key,--시퀀스
-  busRtNum int not null, --노선정보(외래키)
-  busStart date not null, --출발시간날짜
-  busEnd date not null, -- 도착 시간 날짜
-  busCompany varchar2(50) not null, --버스회사
-  busRatingName varchar2(20) not null,--버스 등급
-  busSeatCnt int not null,--버스 총 좌석수 ex)30
-  busSeatRemind int not null,--잔여좌석수 ex) 총 좌석에서 - 예약좌석
-  busSeatPlatform varchar2(10) null, --버스대기자리 
-  busMoney int DEFAULT 0 null --버스 한 좌석당 가격 = 학생 8500원, 일반 12500원
-);
+alter table busSeat add constraints bus_routeNo_fk2 foreign key (s_routeNo) references busRoute (r_routeNo);
+alter table busSeat add constraints bus_timeNo_fk foreign key (s_timeNo) references busTime (t_timeNo);
+alter table busSeat add constraints bus_id_fk2 foreign key (s_id) references busMember (m_id);
 
-commit;
---결제 시스템
-create table BusPay(
-  payNum int primary key not null,--결제 시퀀스
-  userId varchar2(20) not null, --사용자 아이디 외래키
-  payPrice int DEFAULT 0 not null,--일반 12500,학생 8500
-  payType varchar2(10) not null,--카드 종류
-  payCdNum varchar2(20) null ,-- 카드 번호
-  payMonth int default 0 null,--일시불
-  payValDay date null, --카드 유효기간
-  paySecurity varchar2(2) null,--카드 비밀번호 앞 2자리
-  payBirthDay date not null, --생년월일 YYYYMMDD
-  payDay date not null--202011292359 sysdate 결제날짜
+--버스 결제
+create sequence p_payNo
+  start with 1
+  increment by 1;
+  
+create table busPay(
+  p_payNo   number(4) primary key,           --p_payNo시퀀스
+  p_fare    number(10) default 0 not null,   --총 결제 요금
+  p_card    varchar2(10) not null,           --카드 종류('visa' or 'master')
+  p_cardNo  varchar2(20) not null,           --카드 번호
+  p_period  number(4) default 0 not null,    --결제 종류(0)
+  p_valDate date not null,                   --카드 유효기간
+  p_cardPw  number(2) not null,              --카드 비밀번호 앞2자리
+  p_birth   date not null,                   --유저 생년월일
+  p_date    date not null                    --결제 날짜(sysdate)
 );
