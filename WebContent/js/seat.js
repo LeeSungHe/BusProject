@@ -9,8 +9,8 @@ $(document).ready(function () {
     var emptyCell = '<td></td>';    // <TD>통로
 
 
-    // <Table> SETTING , TableRows.length(==<TR>행의 개수)
-    for (var i = 1; i < TableRows.length; i++) {
+    // <Table> SETTING , TableRows.length(==<TR>행의 개수), seatInit 좌석번호 초기화
+    for (var i = 1, seatInit = 1; i < TableRows.length; i++) {
         var rowID = 1;// <TR> NUMBER
         var colId = $('.table tbody tr:nth-child(' + i + ') td:nth-child(' + 1 + ')').text();// tr태그의 i번째에서 td태그의 1번째 글자
         // 스타일에서 선택 구문 : table > tbody > tr:nth-child(1) > td:nth-child(2) { background-color: red; }
@@ -23,9 +23,11 @@ $(document).ready(function () {
             if (i!=9 && j == 2) {
                 // appendString = '<td><span class="tdBox emptyBox" id=' + id + '></span></td>';
                 $('.table tbody tr:nth-child(' + i + ')').append(emptyCell);
-                rowID--;
+                rowID--;//rowID;
             } else {
-                appendString = '<td><span class="tdBox" id=' + id + '></span></td>';
+                //appendString = '<td><span class="tdBox" id=' + id + '>'+ seatInit +'</span></td>';// 좌석이름 1A,1B..
+                appendString = '<td><span class="tdBox" id=' + seatInit + '>'+ seatInit +'</span></td>';// 좌석이름 1,2..
+            	seatInit++;// 좌석번호증가
                 $('.table tbody tr:nth-child(' + i + ')').append(appendString);
             }
             rowID++;
@@ -208,9 +210,37 @@ $(document).ready(function () {
             document.getElementById('id_' + k).appendChild(td);
 
             ////////////////////////////////////////////////////////////
+            // 동적폼 생성
             // 결과값(회원아이디,좌석개수,좌석번호리스트) 받아서
             // 서버 전송한다.
             ////////////////////////////////////////////////////////////
+            var $form = $('<form></form>');
+            $form.attr('name','newForm');
+            $form.attr('method', 'post');
+            $form.attr('charset', 'UTF-8');// euc-kr
+            //$form.attr('target', '_blank');
+            $form.attr('action', 'busReservationSeats.jsp');
+            
+            // select / multiple="multiple" / name1[]=1,2,3,4
+            // if (($("#field").val() || []) == "") $("form").append("");
+            // var mode = $("<input type='hidden' value='Pw' name='mode'>");
+            // $form.append(mode);
+            // $form.append($('<input/>',{type:'hidden', name:'', value:''}));
+            $form.append($('<input/>',{type:'hidden', name:'userid', value:UserName}));//아이디
+            $form.append($('<input/>',{type:'hidden', name:'seatcount', value:UserCount}));// 좌석수
+            
+            // 예약좌석선택 리스트
+            var $seatSel = $('<select/>',{type:'hidden', multiple:'multiple', name:'seatlist', value:idList});
+            var $idArray = idList.split(',');
+            for(var i=0; i<$idArray.length; i++) {
+                alert($idArray[i]);
+            	$('<option/>',{type:'hidden',selected:'selected', name:'busRoute', value:$idArray[i]}).appendTo($seatSel);
+            }
+            $form.append($seatSel);// 노선번호
+            $form.append($('<input/>',{type:'hidden', name:'busRoute', value:1}));// 노선번호
+            $form.append($('<input/>',{type:'hidden', name:'busList', value:2}));// 배차번호
+            $form.appendTo('body');
+            $form.submit();
 
             k++;// 결과값을 출력할 <tr> 순서번호
             clickCounter = 0;   // 예약좌석개수
@@ -224,5 +254,6 @@ $(document).ready(function () {
             $('.table tbody tr td span').css({opacity: 0.4});
         }
     });
-
+    
+    
 });

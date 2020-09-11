@@ -17,6 +17,7 @@
 
 .tdBox {
     display: inline-block; 
+    text-align: center;
     width: 26px;
     height: 23px;
     padding: 1px 3px; 

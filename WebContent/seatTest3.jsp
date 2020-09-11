@@ -1,3 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page import = "java.util.Arrays" %>
+<%
+	String fSeat = request.getParameter("s");
+    String seatInfo = "1,28,9";
+    String seats[];
+    if(fSeat == null || fSeat.equals("")) seats = seatInfo.split(",");
+    else seats = fSeat.split(",");
+    
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,6 +19,11 @@
         <script type="text/javascript" src="seat.js"></script>
     </head>
     <body>
+        주소에서 날아오는 초기값은 s=1,28,9 설정<br><br>
+        
+        임의적인 설정값은 주소에서 변경 sample => seatTest3.jsp?s=<% for(int i=0,kk=seats.length; i<kk;i++){out.print((i<kk-1)?(seats[i]+","):seats[i]);} %> <br><br><br>
+        <a href="http://220.70.27.150:8080/Busbusiness/seatTest/seatTest3.jsp?s=1,9,20,27,28">http://220.70.27.150:8080/Busbusiness/seatTest/seatTest3.jsp?s=1,9,20,27,28</a>
+		<br><br>
         <div class="container-fluid">
             <div class="row">
                 <div>
@@ -17,7 +32,7 @@
                         <input type="hidden" class="form-control input" id="Name" value="helloId" placeholder="아이디">
                         성인<input type="number" min='0' max='28' style="width:3%;margin-right: 10px;" id="Adults" value="0" >
                         학생<input type="number" min='0' max='28' style="width:3%;margin-right: 10px;" id="Students" value="0" >
-                        <input type="text" min='0' max='28' class="form-control input" id="Seats"  style="width:5%;margin-right: 10px;" placeholder="총좌석" readonly="readonly">명
+                        <input type="text" min='0' max='28' class="form-control input" id="Seats"  style="width:7%;margin-right: 10px;" placeholder="총좌석" readonly="readonly">명
                         <button type="button" id="Selectseat" class="btn btn-success seatsBtn">예약석선택</button>
                     </div>
                     <div class='row'>
@@ -100,4 +115,46 @@
             </div>
         </div>
     </body>
+	<script type="text/javascript">    
+	$(document).ready(function () {
+	
+		// 예약좌석프로그램 첫로딩 표시 테스트
+		var $loadInsertData = function(fvar1){
+		$fArr1 = fvar1.split(',');
+		
+		$('.table').attr('disabled', false);				// table 태그 활성화
+		$('.table tbody tr td span').css({opacity: 1});		// 투명도 설정
+		var table = document.getElementById("seatTable");	// 좌석테이블
+		var TableRows = $('.table tr');						// table>tr
+		var emptyCell = '<td></td>';						// 빈td
+		
+		// Table> SETTING ,seatInit 좌석번호 초기화
+		for (var i = 1, seatInit = 1; i < TableRows.length-1; i++) {
+		    var rowID = 1;// 행시작
+		    var colId = $('.table tbody tr:nth-child(' + i + ') td:nth-child(' + 1 + ')').text();// 행제목
+		
+		    // 열카운터
+		    for (var j = 0; j < 4; j++) {
+		        if (i!=9&&j==2) {rowID--;} 
+		        else {
+		        	var $fChk = $fArr1.indexOf((seatInit).toString());
+		         if($fChk>-1){ // 좌석 id값 비교
+		         	//console.log('i = ' + i + ', j = ' + j + ', seatInit = ' + seatInit);
+		             var tableCell = document.getElementById(seatInit.toString());//좌석테이블 아이디 저장
+		             $('#' + seatInit).addClass('redColor');
+		        	}
+		        	seatInit++;// 좌석번호증가
+		        }
+		        rowID++;
+		    }
+		}
+		    $('#Seats').val('');
+		    $('#Adults, #Students').val('0');
+		    $('.table tbody tr td').unbind('click');
+		    $('.table tbody tr td span').css({opacity: 0.4});
+		    
+		}('<% for(int i=0,kk=seats.length; i<kk;i++){out.print((i<kk-1)?(seats[i]+","):seats[i]);} %>');// 주소에서 날아오는값
+	
+	});
+	</script>
 </html>
