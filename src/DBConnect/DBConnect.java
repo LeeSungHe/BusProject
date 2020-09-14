@@ -1,26 +1,65 @@
 package DBConnect;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class DBConnect {
 public DBConnect() {}
-	
-	//getConnection ¸Þ¼Òµå¸¦ ¸¸µé°í ¹ÝÈ¯°ªÀº connectionÅ¸ÀÔÀº con
-	public Connection getConnection() {
-		String url = "jdbc:oracle:thin:@192.168.0.224:1521:XE";
-		String id = "system";
-		String pass = "sh73014254";
-		
-		Connection con = null;
-		
+private static String url = "jdbc:oracle:thin:@192.168.0.224:1521:XE";
+private static String id = "system";
+private static String pass = "sh73014254";
+
+//ì¹´ë„¥ì…˜ ì–»ì–´ì˜¤ê¸°
+	public static Connection getConnection() {
+		Connection conn = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection(url,id,pass);
-		}catch(Exception e) {
-			System.out.println(e);
+			conn = DriverManager.getConnection(url, id, pass);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return con;
+		return conn;
+	}
+
+	public static void close(Connection conn, PreparedStatement pstmt,
+			ResultSet rset) {
+		if (rset != null) {
+			try {
+				rset.close();
+			} catch (SQLException e) {
+			}
+		}
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
+	}
+
+	public static void close(Connection conn, PreparedStatement pstmt) {
+
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+			}
+		}
 	}
 
 
