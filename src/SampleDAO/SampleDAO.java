@@ -8,9 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import DBConnect.DBClose;
+
 import DBConnect.DBConnect;
-import oracle.net.aso.f;
 
 public class SampleDAO {
 	DBConnect dbconnect = null;
@@ -20,11 +19,11 @@ public class SampleDAO {
 	private ResultSet rs;
 
 	
-	//DB¿¬°á
+	//DBì—°ê²°
 	public SampleDAO() { 
 		dbconnect = new DBConnect(); 
 	}
-	//»ùÇÃ
+	//ï¿½ï¿½ï¿½ï¿½
 	public int Sample() {
 		con = dbconnect.getConnection();
 		int sample = 0;
@@ -34,7 +33,7 @@ public class SampleDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBClose.close(con, pstmt, rs);
+		
 		}
 		return sample;
 	}
