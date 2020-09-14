@@ -25,7 +25,7 @@ create table busNotice(
   n_title     varchar2(100) not null,        --글 제목
   n_content   varchar2(1000) not null,       --글 내용
   n_date      date,                          --게시 날짜(sysdate)
-  n_editDate  date,                      --최종수정날짜(sysdate)
+  n_editDate  date,                         --최종수정날짜(sysdate)
   n_hit       number(3) default 0 not null,   --조회수
   n_type	  varcgar2(5) not null               
 );
