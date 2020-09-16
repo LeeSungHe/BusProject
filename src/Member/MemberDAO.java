@@ -183,16 +183,16 @@ public class MemberDAO {
 
     }
 	//중복체크
-	public int confirmID(String userid) {
+	public int confirmID(String m_id) {
 		int result = -1;
-		String sql = "select userid from member where userid=?";
+		String sql = "select m_id from busmember where m_id=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			conn = DBConnect.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
+			pstmt.setString(1, m_id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				result = 1;
